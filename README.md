@@ -37,150 +37,156 @@ arogya-ai-dashboard/
 
 ArogyaAI is an AI-powered public health monitoring system conceptualized for Smart India Hackathon (SIH) 2025, aimed at improving early disease awareness and tuberculosis (TB) screening using conversational AI and medical imaging.
 
+
 This repository contains the Admin Dashboard (frontend-only) used by health officials to visualize system insights, AI detections, and regional trends.
+
 
 📌 What This Repository Contains
 
 ✅ Admin Dashboard (Frontend)
 
-High-fidelity, production-style UI for health officials
+  High-fidelity, production-style UI for health officials
 
-Visualizes AI-driven insights from citizen health interactions
+  Visualizes AI-driven insights from citizen health interactions
 
-Designed for monitoring TB-suspected cases, trends, and alerts
+  Designed for monitoring TB-suspected cases, trends, and alerts
 
-Included features:
+  Included features:
 
-KPI overview (users, TB cases, alerts, regions)
+  KPI overview (users, TB cases, alerts, regions)
 
-Live conversation monitoring (WhatsApp-style chat view)
+  Live conversation monitoring (WhatsApp-style chat view)
 
-TB detection case management (risk-based categorization)
+  TB detection case management (risk-based categorization)
 
-Interactive India geo heatmap (state-wise trends)
+  Interactive India geo heatmap (state-wise trends)
 
-Disease analytics & charts
+  Disease analytics & charts
 
-Alerts & flags for abnormal patterns
+  Alerts & flags for abnormal patterns
 
-System health monitoring UI
+  System health monitoring UI
+
 
 ❌ What This Repository Does NOT Contain (By Design)
 
-This repository does not include backend services or WhatsApp integration, and this is intentional.
+  This repository does not include backend services or WhatsApp integration, and this is intentional.
 
-Excluded Components:
+  Excluded Components:
 
-WhatsApp Business API integration
+  WhatsApp Business API integration
 
-Backend services (Flask/FastAPI)
+  Backend services (Flask/FastAPI)
 
-AI inference APIs
+  AI inference APIs
 
-Database and message queues
+  Database and message queues
 
-Authentication and role management
+  Authentication and role management
 
 Reason (Important):
 
-The backend services involve private API keys, sensitive health workflows, and restricted WhatsApp integrations.
+  The backend services involve private API keys, sensitive health workflows, and restricted WhatsApp integrations.
 
-For security, privacy, and compliance reasons, those components are not open-sourced.
+  For security, privacy, and compliance reasons, those components are not open-sourced.
 
-This repository focuses on the admin-facing visualization layer, which is sufficient to demonstrate:
+  This repository focuses on the admin-facing visualization layer, which is sufficient to demonstrate:
 
-System architecture
+  System architecture
 
-Decision-support capabilities
+  Decision-support capabilities
 
-Real-world deployment readiness
+  Real-world deployment readiness
 
-This separation also follows industry best practices, where dashboards and core health-processing services are maintained independently.
+  This separation also follows industry best practices, where dashboards and core health-processing services are maintained independently.
 
 🧠 System Architecture (High-Level)
 
 User Side
 
-Citizens interact via WhatsApp chatbot
+  Citizens interact via WhatsApp chatbot
 
-Multilingual symptom-based conversation
+  Multilingual symptom-based conversation
 
-Optional chest X-ray upload for TB screening
+  Optional chest X-ray upload for TB screening
 
-AI Layer
+  AI Layer
 
-NLP-based symptom flow analysis
+  NLP-based symptom flow analysis
 
-CNN-based TB detection model trained on chest X-ray datasets
+  CNN-based TB detection model trained on chest X-ray datasets
 
-Risk classification (Normal / Medium / High / Critical)
+  Risk classification (Normal / Medium / High / Critical)
+  
+  Admin Side (This Repo)
 
-Admin Side (This Repo)
+  Aggregates AI outputs
 
-Aggregates AI outputs
+  Visualizes regional disease patterns
 
-Visualizes regional disease patterns
-
-Supports decision-making for health officials
+  Supports decision-making for health officials
+  
 
 🛠 Tech Stack (Complete Project)
+
 Frontend (This Repository)
 
-HTML5
+  HTML5
 
-CSS3 (Glassmorphism, dark/light themes)
+  CSS3 (Glassmorphism, dark/light themes)
 
-Vanilla JavaScript (ES6+)
+  Vanilla JavaScript (ES6+)
 
-Chart.js (analytics & trends)
+  Chart.js (analytics & trends)
 
-Leaflet.js + Heatmaps (geospatial insights)
+  Leaflet.js + Heatmaps (geospatial insights)
 
-Lucide Icons
+  Lucide Icons
 
-Google Fonts (Inter, DM Sans)
+  Google Fonts (Inter, DM Sans)
 
 Backend & AI (System-Level)
 
-Python (Flask / FastAPI)
+  Python (Flask / FastAPI)
 
-WhatsApp Business API (Twilio / Meta)
+  WhatsApp Business API (Twilio / Meta)
 
-CNN-based Deep Learning model for TB detection
+  CNN-based Deep Learning model for TB detection
 
-NLP-driven conversational flows
+  NLP-driven conversational flows
 
-REST APIs for data aggregation
+  REST APIs for data aggregation
 
 📸 Demo & Screenshots
 
-This project is demonstrated using:
+  This project is demonstrated using:
 
-Deployed admin dashboard (static hosting)
+  Deployed admin dashboard (static hosting)
 
-Real WhatsApp chat screenshots showing:
+  Real WhatsApp chat screenshots showing:
 
-Normal health conversations
+  Normal health conversations
 
-TB risk detection flows
+  TB risk detection flows
 
-Simulated system data for visualization
+  Simulated system data for visualization
 
 ⚠️ No real patient data is used in this demo.
 
 🎯 Why This Matters
 
-TB is one of India’s most critical public health challenges
+  TB is one of India’s most critical public health challenges
 
-Early symptom awareness can significantly reduce late diagnosis
+  Early symptom awareness can significantly reduce late diagnosis
 
-Familiar platforms like WhatsApp lower adoption barriers
+  Familiar platforms like WhatsApp lower adoption barriers
 
-Admin dashboards enable data-driven public health interventions
+  Admin dashboards enable data-driven public health interventions
 
 🧪 Disclaimer
 
 This project is a prototype developed for Smart India Hackathon 2025.
 It is not a medical diagnostic system and should not be used as a substitute for professional medical advice.
 Built for Smart India Hackathon demonstration.
+
 
