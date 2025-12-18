@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="ArogyaAI Admin Dashboard - AI-powered public health monitoring system for TB detection and disease surveillance">
+    <title>ArogyaAI | Admin Dashboard</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Leaflet CSS & JS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet.heat/dist/leaflet-heat.js"></script>
+    
+    <!-- Main Stylesheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">
+                <div class="logo-icon">
+                    <i data-lucide="heart-pulse"></i>
+                </div>
+                <span class="logo-text">ArogyaAI</span>
+            </div>
+            <button class="sidebar-toggle" id="sidebarToggle">
+                <i data-lucide="panel-left-close"></i>
+            </button>
+        </div>
+        
+        <nav class="sidebar-nav">
+            <ul class="nav-list">
+                <li class="nav-item active" data-section="overview">
+                    <a href="#" class="nav-link">
+                        <i data-lucide="layout-dashboard"></i>
+                        <span>Overview</span>
+                    </a>
+                </li>
+                <li class="nav-item" data-section="conversations">
+                    <a href="#" class="nav-link">
+                        <i data-lucide="message-square"></i>
+                        <span>Live Conversations</span>
+                        <span class="badge pulse">Live</span>
+                    </a>
+                </li>
+                <li class="nav-item" data-section="tb-cases">
+                    <a href="#" class="nav-link">
+                        <i data-lucide="stethoscope"></i>
+                        <span>TB Detection Cases</span>
+                        <span class="badge warning">7</span>
+                    </a>
+                </li>
+                <li class="nav-item" data-section="analytics">
+                    <a href="#" class="nav-link">
+                        <i data-lucide="bar-chart-3"></i>
+                        <span>Disease Analytics</span>
+                    </a>
+                </li>
+                <li class="nav-item" data-section="heatmap">
+                    <a href="#" class="nav-link">
+                        <i data-lucide="map"></i>
+                        <span>Geo Heatmap</span>
+                    </a>
+                </li>
+                <li class="nav-item" data-section="alerts">
+                    <a href="#" class="nav-link">
+                        <i data-lucide="bell-ring"></i>
+                        <span>Alerts & Flags</span>
+                        <span class="badge danger">5</span>
+                    </a>
+                </li>
+                <li class="nav-item" data-section="reports">
+                    <a href="#" class="nav-link">
+                        <i data-lucide="file-text"></i>
+                        <span>Reports</span>
+                    </a>
+                </li>
+                <li class="nav-item" data-section="system">
+                    <a href="#" class="nav-link">
+                        <i data-lucide="server"></i>
+                        <span>System Health</span>
+                    </a>
+                </li>
+            </ul>
+            
+            <div class="nav-divider"></div>
+            
+            <ul class="nav-list">
+                <li class="nav-item" data-section="settings">
+                    <a href="#" class="nav-link">
+                        <i data-lucide="settings"></i>
+                        <span>Settings</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        
+        <div class="sidebar-footer">
+            <div class="system-status">
+                <span class="status-dot active"></span>
+                <span class="status-text">System Operational</span>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Top Navbar -->
+        <header class="navbar">
+            <div class="navbar-left">
+                <button class="mobile-menu-btn" id="mobileMenuBtn">
+                    <i data-lucide="menu"></i>
+                </button>
+                <div class="breadcrumb">
+                    <span class="breadcrumb-item">Dashboard</span>
+                    <i data-lucide="chevron-right"></i>
+                    <span class="breadcrumb-item active" id="currentSection">Overview</span>
+                </div>
+            </div>
+            
+            <div class="navbar-center">
+                <div class="search-container">
+                    <input type="text" placeholder="Search conversations, cases, regions..." class="search-input">
+                </div>
+            </div>
+            
+            <div class="navbar-right">
+                <button class="icon-btn" id="notificationBtn">
+                    <i data-lucide="bell"></i>
+                    <span class="notification-dot"></span>
+                </button>
+                
+                <div class="user-menu">
+                    <div class="user-avatar">
+                        <span>AD</span>
+                    </div>
+                    <div class="user-info">
+                        <span class="user-name">Admin User</span>
+                        <span class="user-role">Health Official</span>
+                    </div>
+                    <i data-lucide="chevron-down"></i>
+                </div>
+            </div>
+        </header>
+
+        <!-- Content Area -->
+        <div class="content-area">
+            <!-- Overview Section -->
+            <section class="section" id="section-overview">
+                <div class="section-header">
+                    <div>
+                        <h1 class="section-title">Dashboard Overview</h1>
+                        <p class="section-subtitle">Real-time insights from AI-powered health monitoring</p>
+                    </div>
+                    <div class="section-actions">
+                        <span class="last-updated">
+                            <i data-lucide="refresh-cw"></i>
+                            Last updated: <span id="lastUpdated">Just now</span>
+                        </span>
+                    </div>
+                </div>
+                
+                <!-- KPI Cards -->
+                <div class="kpi-grid">
+                    <div class="kpi-card gradient-blue">
+                        <div class="kpi-icon">
+                            <i data-lucide="users"></i>
+                        </div>
+                        <div class="kpi-content">
+                            <span class="kpi-value" id="kpiUsers">24,847</span>
+                            <span class="kpi-label">Total Users Interacted</span>
+                        </div>
+                        <div class="kpi-trend up">
+                            <i data-lucide="trending-up"></i>
+                            <span>+12.5%</span>
+                        </div>
+                    </div>
+                    
+                    <div class="kpi-card gradient-red">
+                        <div class="kpi-icon">
+                            <i data-lucide="alert-triangle"></i>
+                        </div>
+                        <div class="kpi-content">
+                            <span class="kpi-value" id="kpiTbCases">1,247</span>
+                            <span class="kpi-label">TB Suspected Cases</span>
+                        </div>
+                        <div class="kpi-trend up warning">
+                            <i data-lucide="trending-up"></i>
+                            <span>+8.3%</span>
+                        </div>
+                    </div>
+                    
+                    <div class="kpi-card gradient-green">
+                        <div class="kpi-icon">
+                            <i data-lucide="check-circle"></i>
+                        </div>
+                        <div class="kpi-content">
+                            <span class="kpi-value" id="kpiNormal">23,600</span>
+                            <span class="kpi-label">Normal Conversations</span>
+                        </div>
+                        <div class="kpi-trend up">
+                            <i data-lucide="trending-up"></i>
+                            <span>+15.2%</span>
+                        </div>
+                    </div>
+                    
+                    <div class="kpi-card gradient-orange">
+                        <div class="kpi-icon">
+                            <i data-lucide="bell-ring"></i>
+                        </div>
+                        <div class="kpi-content">
+                            <span class="kpi-value" id="kpiAlerts">89</span>
+                            <span class="kpi-label">Alerts Generated</span>
+                        </div>
+                        <div class="kpi-trend down">
+                            <i data-lucide="trending-down"></i>
+                            <span>-5.1%</span>
+                        </div>
+                    </div>
+                    
+                    <div class="kpi-card gradient-purple">
+                        <div class="kpi-icon">
+                            <i data-lucide="map-pin"></i>
+                        </div>
+                        <div class="kpi-content">
+                            <span class="kpi-value" id="kpiRegions">28</span>
+                            <span class="kpi-label">Active Regions</span>
+                        </div>
+                        <div class="kpi-trend stable">
+                            <i data-lucide="minus"></i>
+                            <span>Stable</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Charts Row -->
+                <div class="charts-grid">
+                    <div class="chart-card large">
+                        <div class="card-header">
+                            <h3 class="card-title">Cases Over Time</h3>
+                            <div class="card-actions">
+                                <select class="select-minimal" id="chartPeriod">
+                                    <option value="12m">Last 12 Months</option>
+                                    <option value="6m">Last 6 Months</option>
+                                    <option value="3m">Last 3 Months</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="casesChart"></canvas>
+                        </div>
+                    </div>
+                    
+                    <div class="chart-card">
+                        <div class="card-header">
+                            <h3 class="card-title">Outcome Distribution</h3>
+                        </div>
+                        <div class="chart-container pie">
+                            <canvas id="distributionChart"></canvas>
+                        </div>
+                        <div class="chart-legend" id="distributionLegend"></div>
+                    </div>
+                </div>
+                
+                <!-- Activity Feed -->
+                <div class="activity-section">
+                    <div class="activity-feed-card">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <i data-lucide="activity"></i>
+                                Recent Activity
+                            </h3>
+                            <a href="#" class="view-all-link">View All</a>
+                        </div>
+                        <div class="activity-list" id="activityList">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
+                    
+                    <div class="quick-stats-card">
+                        <div class="card-header">
+                            <h3 class="card-title">Quick Stats</h3>
+                            <div class="toggle-group">
+                                <button class="toggle-btn active" data-period="weekly">Weekly</button>
+                                <button class="toggle-btn" data-period="monthly">Monthly</button>
+                            </div>
+                        </div>
+                        <div class="quick-stats-grid" id="quickStats">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Conversations Section -->
+            <section class="section hidden" id="section-conversations">
+                <div class="section-header">
+                    <div>
+                        <h1 class="section-title">Live Conversations</h1>
+                        <p class="section-subtitle">Monitor real-time WhatsApp health conversations</p>
+                    </div>
+                    <div class="section-actions">
+                        <div class="filter-group">
+                            <button class="filter-btn active" data-filter="all">All</button>
+                            <button class="filter-btn" data-filter="tb">TB Risk</button>
+                            <button class="filter-btn" data-filter="normal">Normal</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="table-card">
+                    <div class="table-header">
+                        <div class="table-search">
+                            <i data-lucide="search"></i>
+                            <input type="text" placeholder="Search by ID, symptoms, region..." id="conversationSearch">
+                        </div>
+                        <div class="table-actions">
+                            <button class="btn-secondary">
+                                <i data-lucide="download"></i>
+                                Export
+                            </button>
+                            <button class="btn-secondary">
+                                <i data-lucide="filter"></i>
+                                Filters
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="table-responsive">
+                        <table class="data-table" id="conversationsTable">
+                            <thead>
+                                <tr>
+                                    <th>Conversation ID</th>
+                                    <th>Language</th>
+                                    <th>Symptoms</th>
+                                    <th>AI Outcome</th>
+                                    <th>Timestamp</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="conversationsBody">
+                                <!-- Populated by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="table-footer">
+                        <span class="table-info">Showing <strong>8</strong> of <strong>24,847</strong> conversations</span>
+                        <div class="pagination">
+                            <button class="pagination-btn" disabled><i data-lucide="chevron-left"></i></button>
+                            <button class="pagination-btn active">1</button>
+                            <button class="pagination-btn">2</button>
+                            <button class="pagination-btn">3</button>
+                            <span class="pagination-ellipsis">...</span>
+                            <button class="pagination-btn">248</button>
+                            <button class="pagination-btn"><i data-lucide="chevron-right"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TB Detection Cases Section -->
+            <section class="section hidden" id="section-tb-cases">
+                <div class="section-header">
+                    <div>
+                        <h1 class="section-title">TB Detection Cases</h1>
+                        <p class="section-subtitle">AI-flagged tuberculosis suspected cases requiring attention</p>
+                    </div>
+                    <div class="section-actions">
+                        <button class="btn-primary">
+                            <i data-lucide="download"></i>
+                            Export Report
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="risk-summary">
+                    <div class="risk-card critical">
+                        <div class="risk-icon"><i data-lucide="alert-octagon"></i></div>
+                        <div class="risk-info">
+                            <span class="risk-count">1</span>
+                            <span class="risk-label">Critical</span>
+                        </div>
+                    </div>
+                    <div class="risk-card high">
+                        <div class="risk-icon"><i data-lucide="alert-triangle"></i></div>
+                        <div class="risk-info">
+                            <span class="risk-count">3</span>
+                            <span class="risk-label">High Risk</span>
+                        </div>
+                    </div>
+                    <div class="risk-card medium">
+                        <div class="risk-icon"><i data-lucide="alert-circle"></i></div>
+                        <div class="risk-info">
+                            <span class="risk-count">2</span>
+                            <span class="risk-label">Medium Risk</span>
+                        </div>
+                    </div>
+                    <div class="risk-card low">
+                        <div class="risk-icon"><i data-lucide="info"></i></div>
+                        <div class="risk-info">
+                            <span class="risk-count">1</span>
+                            <span class="risk-label">Low Risk</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="cases-list" id="tbCasesList">
+                    <!-- Populated by JS -->
+                </div>
+            </section>
+
+            <!-- Analytics Section -->
+            <section class="section hidden" id="section-analytics">
+                <div class="section-header">
+                    <div>
+                        <h1 class="section-title">Disease Analytics</h1>
+                        <p class="section-subtitle">Comprehensive analysis of health patterns and trends</p>
+                    </div>
+                </div>
+                
+                <div class="analytics-grid">
+                    <div class="chart-card">
+                        <div class="card-header">
+                            <h3 class="card-title">Regional Case Distribution</h3>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="regionalChart"></canvas>
+                        </div>
+                    </div>
+                    
+                    <div class="chart-card">
+                        <div class="card-header">
+                            <h3 class="card-title">Symptom Frequency</h3>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="symptomsChart"></canvas>
+                        </div>
+                    </div>
+                    
+                    <div class="chart-card large">
+                        <div class="card-header">
+                            <h3 class="card-title">Weekly Comparison</h3>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="weeklyChart"></canvas>
+                        </div>
+                    </div>
+                    
+                    <div class="chart-card">
+                        <div class="card-header">
+                            <h3 class="card-title">Language Distribution</h3>
+                        </div>
+                        <div class="chart-container pie">
+                            <canvas id="languageChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Heatmap Section -->
+            <section class="section hidden" id="section-heatmap">
+                <div class="section-header">
+                    <div>
+                        <h1 class="section-title">Geographic Heatmap</h1>
+                        <p class="section-subtitle">TB case density across India</p>
+                    </div>
+                    <div class="section-actions">
+                        <div class="map-controls">
+                            <button class="map-control-btn active" data-layer="heat">Heatmap</button>
+                            <button class="map-control-btn" data-layer="markers">Markers</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="map-container-wrapper">
+                    <div class="map-container" id="indiaMap"></div>
+                    <div class="map-legend">
+                        <h4>TB Case Density</h4>
+                        <div class="legend-gradient"></div>
+                        <div class="legend-labels">
+                            <span>Low</span>
+                            <span>High</span>
+                        </div>
+                    </div>
+                    <div class="map-stats">
+                        <div class="map-stat">
+                            <span class="stat-value">15</span>
+                            <span class="stat-label">States Active</span>
+                        </div>
+                        <div class="map-stat">
+                            <span class="stat-value">1,247</span>
+                            <span class="stat-label">TB Cases</span>
+                        </div>
+                        <div class="map-stat">
+                            <span class="stat-value">312</span>
+                            <span class="stat-label">Highest (UP)</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Alerts Section -->
+            <section class="section hidden" id="section-alerts">
+                <div class="section-header">
+                    <div>
+                        <h1 class="section-title">Alerts & Flags</h1>
+                        <p class="section-subtitle">AI-generated alerts and anomaly detection</p>
+                    </div>
+                    <div class="section-actions">
+                        <button class="btn-secondary">
+                            <i data-lucide="check-circle"></i>
+                            Mark All Read
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="alerts-list" id="alertsList">
+                    <!-- Populated by JS -->
+                </div>
+            </section>
+
+            <!-- Reports Section -->
+            <section class="section hidden" id="section-reports">
+                <div class="section-header">
+                    <div>
+                        <h1 class="section-title">Reports</h1>
+                        <p class="section-subtitle">Generate and download system reports</p>
+                    </div>
+                </div>
+                
+                <div class="reports-controls">
+                    <div class="toggle-group large">
+                        <button class="toggle-btn active" data-period="weekly">Weekly</button>
+                        <button class="toggle-btn" data-period="monthly">Monthly</button>
+                        <button class="toggle-btn" data-period="quarterly">Quarterly</button>
+                    </div>
+                </div>
+                
+                <div class="reports-grid">
+                    <div class="report-card">
+                        <div class="report-icon"><i data-lucide="file-text"></i></div>
+                        <div class="report-info">
+                            <h4>TB Detection Summary</h4>
+                            <p>Weekly report of all TB suspected cases</p>
+                            <span class="report-date">Generated: Dec 18, 2024</span>
+                        </div>
+                        <div class="report-actions">
+                            <button class="btn-icon" title="Download PDF">
+                                <i data-lucide="file-down"></i>
+                            </button>
+                            <button class="btn-icon" title="Download CSV">
+                                <i data-lucide="sheet"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="report-card">
+                        <div class="report-icon"><i data-lucide="bar-chart-2"></i></div>
+                        <div class="report-info">
+                            <h4>Regional Analytics</h4>
+                            <p>State-wise case distribution and trends</p>
+                            <span class="report-date">Generated: Dec 18, 2024</span>
+                        </div>
+                        <div class="report-actions">
+                            <button class="btn-icon" title="Download PDF">
+                                <i data-lucide="file-down"></i>
+                            </button>
+                            <button class="btn-icon" title="Download CSV">
+                                <i data-lucide="sheet"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="report-card">
+                        <div class="report-icon"><i data-lucide="message-square"></i></div>
+                        <div class="report-info">
+                            <h4>Conversation Log</h4>
+                            <p>Complete log of all AI interactions</p>
+                            <span class="report-date">Generated: Dec 18, 2024</span>
+                        </div>
+                        <div class="report-actions">
+                            <button class="btn-icon" title="Download PDF">
+                                <i data-lucide="file-down"></i>
+                            </button>
+                            <button class="btn-icon" title="Download CSV">
+                                <i data-lucide="sheet"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="report-card">
+                        <div class="report-icon"><i data-lucide="bell"></i></div>
+                        <div class="report-info">
+                            <h4>Alert History</h4>
+                            <p>All system alerts and resolutions</p>
+                            <span class="report-date">Generated: Dec 18, 2024</span>
+                        </div>
+                        <div class="report-actions">
+                            <button class="btn-icon" title="Download PDF">
+                                <i data-lucide="file-down"></i>
+                            </button>
+                            <button class="btn-icon" title="Download CSV">
+                                <i data-lucide="sheet"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="report-preview-card">
+                    <div class="card-header">
+                        <h3 class="card-title">Report Preview</h3>
+                    </div>
+                    <div class="report-preview-stats">
+                        <div class="preview-stat">
+                            <span class="preview-value">4,520</span>
+                            <span class="preview-label">Conversations This Week</span>
+                        </div>
+                        <div class="preview-stat">
+                            <span class="preview-value">89</span>
+                            <span class="preview-label">TB Cases Detected</span>
+                        </div>
+                        <div class="preview-stat">
+                            <span class="preview-value">12</span>
+                            <span class="preview-label">Alerts Generated</span>
+                        </div>
+                        <div class="preview-stat">
+                            <span class="preview-value">99.7%</span>
+                            <span class="preview-label">System Uptime</span>
+                        </div>
+                    </div>
+                    <div class="chart-container small">
+                        <canvas id="reportPreviewChart"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <!-- System Health Section -->
+            <section class="section hidden" id="section-system">
+                <div class="section-header">
+                    <div>
+                        <h1 class="section-title">System Health</h1>
+                        <p class="section-subtitle">Monitor AI system performance and status</p>
+                    </div>
+                </div>
+                
+                <div class="system-grid">
+                    <div class="system-card">
+                        <div class="system-header">
+                            <div class="system-icon healthy">
+                                <i data-lucide="cpu"></i>
+                            </div>
+                            <div class="system-info">
+                                <h4>AI Model</h4>
+                                <span class="system-version">v3.2.1</span>
+                            </div>
+                            <div class="status-badge healthy">Operational</div>
+                        </div>
+                        <div class="system-metric">
+                            <span class="metric-label">Uptime</span>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 99.7%"></div>
+                            </div>
+                            <span class="metric-value">99.7%</span>
+                        </div>
+                    </div>
+                    
+                    <div class="system-card">
+                        <div class="system-header">
+                            <div class="system-icon healthy">
+                                <i data-lucide="server"></i>
+                            </div>
+                            <div class="system-info">
+                                <h4>API Server</h4>
+                                <span class="system-version">Primary</span>
+                            </div>
+                            <div class="status-badge healthy">Active</div>
+                        </div>
+                        <div class="system-metric">
+                            <span class="metric-label">Usage</span>
+                            <div class="progress-bar">
+                                <div class="progress-fill warning" style="width: 78%"></div>
+                            </div>
+                            <span class="metric-value">78%</span>
+                        </div>
+                    </div>
+                    
+                    <div class="system-card">
+                        <div class="system-header">
+                            <div class="system-icon healthy">
+                                <i data-lucide="message-circle"></i>
+                            </div>
+                            <div class="system-info">
+                                <h4>WhatsApp Integration</h4>
+                                <span class="system-version">Business API</span>
+                            </div>
+                            <div class="status-badge healthy">Connected</div>
+                        </div>
+                        <div class="system-metric">
+                            <span class="metric-label">Messages Today</span>
+                            <span class="metric-value large">1,247</span>
+                        </div>
+                    </div>
+                    
+                    <div class="system-card">
+                        <div class="system-header">
+                            <div class="system-icon healthy">
+                                <i data-lucide="database"></i>
+                            </div>
+                            <div class="system-info">
+                                <h4>Database</h4>
+                                <span class="system-version">PostgreSQL</span>
+                            </div>
+                            <div class="status-badge healthy">Healthy</div>
+                        </div>
+                        <div class="system-metric">
+                            <span class="metric-label">Response Time</span>
+                            <span class="metric-value large">12ms</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="system-details-card">
+                    <div class="card-header">
+                        <h3 class="card-title">System Metrics</h3>
+                    </div>
+                    <div class="metrics-grid">
+                        <div class="metric-item">
+                            <i data-lucide="clock"></i>
+                            <div class="metric-content">
+                                <span class="metric-label">Last Sync</span>
+                                <span class="metric-value">Dec 18, 2024 14:55:00</span>
+                            </div>
+                        </div>
+                        <div class="metric-item">
+                            <i data-lucide="zap"></i>
+                            <div class="metric-content">
+                                <span class="metric-label">Avg Response Time</span>
+                                <span class="metric-value">1.2s</span>
+                            </div>
+                        </div>
+                        <div class="metric-item">
+                            <i data-lucide="inbox"></i>
+                            <div class="metric-content">
+                                <span class="metric-label">Messages Processed</span>
+                                <span class="metric-value">24,847</span>
+                            </div>
+                        </div>
+                        <div class="metric-item">
+                            <i data-lucide="shield-check"></i>
+                            <div class="metric-content">
+                                <span class="metric-label">Security Status</span>
+                                <span class="metric-value success">All Clear</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Settings Section -->
+            <section class="section hidden" id="section-settings">
+                <div class="section-header">
+                    <div>
+                        <h1 class="section-title">Settings</h1>
+                        <p class="section-subtitle">Configure dashboard preferences</p>
+                    </div>
+                </div>
+                
+                <div class="settings-grid">
+                    <div class="settings-card">
+                        <h4>Notification Preferences</h4>
+                        <div class="settings-item">
+                            <div class="setting-info">
+                                <span class="setting-label">Critical Alert Notifications</span>
+                                <span class="setting-desc">Receive notifications for critical TB cases</span>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                        <div class="settings-item">
+                            <div class="setting-info">
+                                <span class="setting-label">Daily Summary Email</span>
+                                <span class="setting-desc">Receive daily digest via email</span>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                        <div class="settings-item">
+                            <div class="setting-info">
+                                <span class="setting-label">System Status Alerts</span>
+                                <span class="setting-desc">Notifications for system health issues</span>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="settings-card">
+                        <h4>Display Settings</h4>
+                        <div class="settings-item">
+                            <div class="setting-info">
+                                <span class="setting-label">Auto-refresh Data</span>
+                                <span class="setting-desc">Automatically refresh dashboard every 5 minutes</span>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                        <div class="settings-item">
+                            <div class="setting-info">
+                                <span class="setting-label">Compact View</span>
+                                <span class="setting-desc">Use compact layout for tables</span>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                        <div class="settings-item">
+                            <div class="setting-info">
+                                <span class="setting-label">Show Demo Badge</span>
+                                <span class="setting-desc">Display demo mode indicator</span>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Conversation Modal -->
+    <div class="modal-overlay" id="conversationModal">
+        <div class="modal">
+            <div class="modal-header">
+                <div class="modal-title-group">
+                    <h3 class="modal-title">Conversation Details</h3>
+                    <span class="modal-subtitle" id="modalConversationId"></span>
+                </div>
+                <button class="modal-close" id="closeModal">
+                    <i data-lucide="x"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="conversation-meta" id="conversationMeta">
+                    <!-- Populated by JS -->
+                </div>
+                <div class="chat-container" id="chatContainer">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary">
+                    <i data-lucide="flag"></i>
+                    Flag for Review
+                </button>
+                <button class="btn-primary">
+                    <i data-lucide="external-link"></i>
+                    Open Full Record
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Main Script -->
+    <script src="script.js"></script>
+</body>
+</html>
