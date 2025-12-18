@@ -35,58 +35,152 @@ arogya-ai-dashboard/
 └── README.md           # This file
 ```
 
-## ✨ Features
+ArogyaAI is an AI-powered public health monitoring system conceptualized for Smart India Hackathon (SIH) 2025, aimed at improving early disease awareness and tuberculosis (TB) screening using conversational AI and medical imaging.
 
-### Dashboard Sections
-1. **Overview** - KPI cards, line/pie charts, activity feed
-2. **Live Conversations** - Searchable table with filters, conversation modals
-3. **TB Detection Cases** - Risk-categorized cases with severity indicators
-4. **Disease Analytics** - Regional, symptom, and language charts
-5. **Geo Heatmap** - Interactive India map with TB case density
-6. **Alerts & Flags** - AI-generated alerts with severity badges
-7. **Reports** - Downloadable reports section (mock)
-8. **System Health** - AI/API status with progress indicators
-9. **Settings** - Notification and display preferences
+This repository contains the Admin Dashboard (frontend-only) used by health officials to visualize system insights, AI detections, and regional trends.
 
-### Key Interactions
-- Collapsible sidebar navigation
-- Click conversations to view WhatsApp-style chat modal
-- Filter conversations by TB Risk / Normal
-- Search across all data
-- Toggle heatmap/markers on map
-- Weekly/Monthly stats toggle
+📌 What This Repository Contains
 
-## 🛠 Technologies
+✅ Admin Dashboard (Frontend)
 
-- **HTML5** - Semantic structure
-- **CSS3** - Dark theme, glassmorphism, animations
-- **JavaScript** - Vanilla ES6+
-- **Chart.js** - Line, bar, doughnut charts
-- **Leaflet.js** - Interactive heatmap
-- **Lucide Icons** - Modern icon set
-- **Google Fonts** - Inter, DM Sans
+High-fidelity, production-style UI for health officials
 
-## 📸 Screenshot Tips
+Visualizes AI-driven insights from citizen health interactions
 
-For best presentation screenshots:
-1. Use full-screen (F11) mode
-2. Capture Overview section for KPI impact
-3. Capture Geo Heatmap for visual wow
-4. Capture TB Cases section for medical credibility
-5. Use browser dev tools to simulate different screen sizes
+Designed for monitoring TB-suspected cases, trends, and alerts
 
-## 📝 Demo Data Notice
+Included features:
 
-All data in this dashboard is mock/synthetic for demonstration purposes only. No real patient data is used.
+KPI overview (users, TB cases, alerts, regions)
 
-## 🎨 Design Philosophy
+Live conversation monitoring (WhatsApp-style chat view)
 
-- **Dark medical-tech theme** - Professional and modern
-- **Glassmorphism cards** - Trendy depth effects
-- **Calm blue/green palette** - Trustworthy healthcare feel
-- **Large spacing & rounded corners** - Premium look
-- **Smooth transitions** - Polished interactions
+TB detection case management (risk-based categorization)
 
----
+Interactive India geo heatmap (state-wise trends)
 
+Disease analytics & charts
+
+Alerts & flags for abnormal patterns
+
+System health monitoring UI
+
+❌ What This Repository Does NOT Contain (By Design)
+
+This repository does not include backend services or WhatsApp integration, and this is intentional.
+
+Excluded Components:
+
+WhatsApp Business API integration
+
+Backend services (Flask/FastAPI)
+
+AI inference APIs
+
+Database and message queues
+
+Authentication and role management
+
+Reason (Important):
+
+The backend services involve private API keys, sensitive health workflows, and restricted WhatsApp integrations.
+
+For security, privacy, and compliance reasons, those components are not open-sourced.
+
+This repository focuses on the admin-facing visualization layer, which is sufficient to demonstrate:
+
+System architecture
+
+Decision-support capabilities
+
+Real-world deployment readiness
+
+This separation also follows industry best practices, where dashboards and core health-processing services are maintained independently.
+
+🧠 System Architecture (High-Level)
+
+User Side
+
+Citizens interact via WhatsApp chatbot
+
+Multilingual symptom-based conversation
+
+Optional chest X-ray upload for TB screening
+
+AI Layer
+
+NLP-based symptom flow analysis
+
+CNN-based TB detection model trained on chest X-ray datasets
+
+Risk classification (Normal / Medium / High / Critical)
+
+Admin Side (This Repo)
+
+Aggregates AI outputs
+
+Visualizes regional disease patterns
+
+Supports decision-making for health officials
+
+🛠 Tech Stack (Complete Project)
+Frontend (This Repository)
+
+HTML5
+
+CSS3 (Glassmorphism, dark/light themes)
+
+Vanilla JavaScript (ES6+)
+
+Chart.js (analytics & trends)
+
+Leaflet.js + Heatmaps (geospatial insights)
+
+Lucide Icons
+
+Google Fonts (Inter, DM Sans)
+
+Backend & AI (System-Level)
+
+Python (Flask / FastAPI)
+
+WhatsApp Business API (Twilio / Meta)
+
+CNN-based Deep Learning model for TB detection
+
+NLP-driven conversational flows
+
+REST APIs for data aggregation
+
+📸 Demo & Screenshots
+
+This project is demonstrated using:
+
+Deployed admin dashboard (static hosting)
+
+Real WhatsApp chat screenshots showing:
+
+Normal health conversations
+
+TB risk detection flows
+
+Simulated system data for visualization
+
+⚠️ No real patient data is used in this demo.
+
+🎯 Why This Matters
+
+TB is one of India’s most critical public health challenges
+
+Early symptom awareness can significantly reduce late diagnosis
+
+Familiar platforms like WhatsApp lower adoption barriers
+
+Admin dashboards enable data-driven public health interventions
+
+🧪 Disclaimer
+
+This project is a prototype developed for Smart India Hackathon 2025.
+It is not a medical diagnostic system and should not be used as a substitute for professional medical advice.
 Built for Smart India Hackathon demonstration.
+
